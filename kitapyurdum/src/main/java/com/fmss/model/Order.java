@@ -5,15 +5,16 @@ import com.fmss.model.enums.OrderStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class Order {
     private LocalDateTime createDate;
-    private List<Product> productList;
-    private String orderCode; // orderCode generate
+    private Set<Product> productList;
+    private String orderCode;
     private OrderStatus orderStatus;
 
 
-    public Order(List<Product> productList, String orderCode) {
+    public Order(Set<Product> productList, String orderCode) {
         this.orderCode = orderCode;
         this.createDate = LocalDateTime.now();
         this.productList = productList;
@@ -28,11 +29,11 @@ public class Order {
         this.createDate = createDate;
     }
 
-    public List<Product> getProductList() {
+    public Set<Product> getProductList() {
         return productList;
     }
 
-    public void setProductList(List<Product> productList) {
+    public void setProductList(Set<Product> productList) {
         this.productList = productList;
     }
 

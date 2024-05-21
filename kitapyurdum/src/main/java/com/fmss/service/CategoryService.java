@@ -5,7 +5,11 @@ import com.fmss.model.Publisher;
 import com.fmss.repository.CategoryRepository;
 import com.fmss.repository.PublisherRepository;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 

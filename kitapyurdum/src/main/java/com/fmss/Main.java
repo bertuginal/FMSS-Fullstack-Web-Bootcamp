@@ -4,6 +4,7 @@ import com.fmss.model.Customer;
 import com.fmss.model.Order;
 import com.fmss.model.Product;
 import com.fmss.model.enums.AccountType;
+import com.fmss.repository.ProductRepository;
 import com.fmss.service.*;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,10 +24,10 @@ public class Main {
         CustomerService customerService = new CustomerService();
 
         try {
-            customerService.save("cem", "dırman", "cem@gmail.com", "password");
-            customerService.save("erkam", "veli", "erkam@gmail.com", "password");
-            customerService.save("veli", "dırman", "veli@gmail.com", "password");
-            customerService.save("veli", "dırman", "veli@gmail.com", "password");
+            customerService.save("cem", "dırman", "cem@gmail.com", "password123");
+            customerService.save("erkam", "veli", "erkam@gmail.com", "password123");
+            customerService.save("veli", "dırman", "veli@gmail.com", "password456");
+            customerService.save("veli", "dırman", "veli@gmail.com", "password789");
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -87,6 +89,14 @@ public class Main {
 
         OrderService orderService = new OrderService();
 
+        orderService.add(productService.getAll(), OrderService.generateOrderCode());
+        orderService.add(productService.getAll(), OrderService.generateOrderCode());
+
+        orderService.getAll().forEach(System.out::println);
+
+
+
+
         //orderService.add(productService.getAll(), "asdasd");
 
 
@@ -106,9 +116,5 @@ public class Main {
 
      */
 
-    private static Order prepareOrder(List<Product> productList) {
-        //Order order = new Order(); tercih etmiyoruz. çünkü direkt dönüş yapıyoruz.
-        return new Order(productList, "order123");
-    }
 
 }
