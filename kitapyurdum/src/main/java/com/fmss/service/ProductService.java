@@ -21,7 +21,7 @@ public class ProductService {
         this.categoryService = categoryService;
     }
 
-    public void save(String name, BigDecimal price, String description, Integer unitInStock, String publisherName, String categoryName) {
+    public Product save(String name, BigDecimal price, String description, Integer unitInStock, String publisherName, String categoryName) {
         Optional<Publisher> publisher = publisherService.getByName(publisherName);
         Optional<Category> category = categoryService.getByName(categoryName);
         System.out.println(publisherService.hashCode());
@@ -38,6 +38,7 @@ public class ProductService {
         Product product = new Product(name, price, description, unitInStock, publisher.get(), category.get());
         productRepository.save(product);
         System.out.println("Product service saved -> " + product);
+        return product;
     }
 
     public Set<Product> getAll() {

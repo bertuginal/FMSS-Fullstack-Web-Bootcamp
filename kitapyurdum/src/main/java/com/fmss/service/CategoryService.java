@@ -16,9 +16,10 @@ import java.util.Optional;
 public class CategoryService {
     private CategoryRepository categoryRepository = new CategoryRepository();
 
-    public void save(String name) {
+    public Category save(String name) {
         Category category = new Category(name);
         categoryRepository.save(category);
+        return category;
     }
 
     public List<Category> getAll() { return categoryRepository.getAll(); }

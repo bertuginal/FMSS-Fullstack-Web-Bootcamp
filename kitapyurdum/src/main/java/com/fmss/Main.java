@@ -1,37 +1,44 @@
 package com.fmss;
 
-import com.fmss.model.Customer;
-import com.fmss.model.Order;
-import com.fmss.model.Product;
+import com.fmss.model.*;
 import com.fmss.model.enums.AccountType;
+import com.fmss.repository.CustomerRepository;
+import com.fmss.repository.InvoiceRepository;
 import com.fmss.repository.ProductRepository;
 import com.fmss.service.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.time.Period;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        CustomerService customerService = new CustomerService();
+        OrderService orderService = new OrderService();
+        PublisherService publisherService = new PublisherService();
+        CategoryService categoryService = new CategoryService();
+        ProductService productService = new ProductService(publisherService, categoryService);
+        InvoiceRepository invoiceRepository = new InvoiceRepository();
+        InvoiceService invoiceService = new InvoiceService(invoiceRepository);
 
 
         //-- customer
         System.out.println("CUSTOMER LIST\n");
 
-        CustomerService customerService = new CustomerService();
 
-        try {
-            customerService.save("cem", "dırman", "cem@gmail.com", "password123");
-            customerService.save("erkam", "veli", "erkam@gmail.com", "password123");
-            customerService.save("veli", "dırman", "veli@gmail.com", "password456");
-            customerService.save("veli", "dırman", "veli@gmail.com", "password789");
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            Customer customer1 = customerService.save("cem", "dırman", LocalDate.of(1997, 5, 20),"cem@gmail.com", "password123");
+            Customer customer2 = customerService.save("bertuğ", "inal", LocalDate.of(2000, 8, 6),"bert@gmail.com", "password123");
+            Customer customer3 = customerService.save("veli", "dırman", LocalDate.of(1996, 3, 12),"veli@gmail.com", "password456");
+            Customer customer4 = customerService.save("veli", "dırman", LocalDate.of(2005, 7, 2),"veli@gmail.com", "password789");
+
+        customer1.setAge(customer1.calculateAge());
+        customer2.setAge(customer2.calculateAge());
+        customer3.setAge(customer3.calculateAge());
+        customer4.setAge(customer4.calculateAge());
+
+        System.out.println("cem's age is: " + customer1.calculateAge());
 
 
         customerService.changeAccountType("cem@gmail.com", AccountType.GOLD);
@@ -40,23 +47,25 @@ public class Main {
         customerService.getCustomerList().forEach(System.out::println);
 
 
+
         //-- publisher
         System.out.println("\nPUBLISHER LIST\n");
 
-        PublisherService publisherService = new PublisherService();
-        publisherService.savePublisher("DERGAH YAYINLARI", LocalDate.now().minusYears(1));
-        publisherService.savePublisher("CAN YAYINLARI", LocalDate.now().minusYears(10));
+
+        Publisher publisher1 = publisherService.savePublisher("DERGAH YAYINLARI", LocalDate.now().minusYears(1));
+        Publisher publisher2 = publisherService.savePublisher("CAN YAYINLARI", LocalDate.now().minusYears(10));
         System.out.println(publisherService.hashCode());
 
         publisherService.getAllPublishers().forEach(System.out::println);
 
+
         //-- category
         System.out.println("\nCATEGORY LIST\n");
 
-        CategoryService categoryService = new CategoryService();
-        categoryService.save("Roman");
-        categoryService.save("Gezi");
-        categoryService.save("Hikaye");
+
+        Category category1 = categoryService.save("Roman");
+        Category category2 = categoryService.save("Gezi");
+        Category category3 = categoryService.save("Hikaye");
 
         categoryService.getAll().forEach(System.out::println);
 
@@ -64,57 +73,83 @@ public class Main {
         //-- product
         System.out.println("\nPRODUCT LIST\n");
 
-        ProductService productService = new ProductService(publisherService, categoryService);
-
-        productService.save("Şeker Portakalı", new BigDecimal("90.20"),
+        Product product1 = productService.save("Şeker Portakalı", new BigDecimal("90.20"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!", 1000,"CAN YAYINLARI", "Roman");
 
-        productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("240.00"),
+        Product product2 = productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("240.00"),
                 "Ahmet Hamdi Tanpınar’ın şiiri sembolist bir ifade üzerine kurulmuştur.",  2000, "CAN YAYINLARI", "Gezi");
 
-        productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("240.00"),
+        Product product3 = productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("2040.00"),
                 "Ahmet Hamdi Tanpınar’ın şiiri sembolist bir ifade üzerine kurulmuştur.", 500,"CAN YAYINLARI", "Hikaye");
 
-        productService.save("Küçük Prens", new BigDecimal("12.88"),
+        Product product4 = productService.save("Küçük Prens", new BigDecimal("12.88"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!",1200,"DERGAH YAYINLARI", "Roman");
 
-        productService.save("Küçük Prens", new BigDecimal("12.88"),
+        Product product5 = productService.save("Küçük Prens", new BigDecimal("12.88"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!",700,"DERGAH YAYINLARI", "Gezi");
 
         productService.listAll();
 
 
-        //order
+
+        //--order
         System.out.println("\n ORDER LIST \n");
 
-        OrderService orderService = new OrderService();
+        for (Customer c : customerService.getCustomerList()) {
 
-        orderService.add(productService.getAll(), OrderService.generateOrderCode());
-        orderService.add(productService.getAll(), OrderService.generateOrderCode());
+        }
+
+        List<Product> productList1 = Arrays.asList(product1, product2, product5);
+        List<Product> productList2 = Arrays.asList(product3);
+
+        Order order1 = orderService.add(productList1, OrderService.generateOrderCode(), customer1);
+        Order order2 = orderService.add(productList2, OrderService.generateOrderCode(), customer2);
+
+        //customerService.addCreditForOrder(customer1.getEmail(), );
+
+
+        //customerService.addCreditForOrder();
 
         orderService.getAll().forEach(System.out::println);
 
 
 
+        //--invoice
+        System.out.println("\nINVOİCE LIST\n");
 
-        //orderService.add(productService.getAll(), "asdasd");
+        invoiceService.createInvoice(order1, customer1);
+        invoiceService.createInvoice(order2, customer2);
+        invoiceService.getAll().forEach(System.out::println);
 
 
-        // ödev email adresi verilen kullanıcının orderlerini getiren method
-        //  listOrdersByEmail("cem@gmail.com");
+
+        System.out.println("\nOUTPUT\n");
+        System.out.println("Customer numbers: " + customerService.getCustomerList().size());
+        System.out.println("Number of products purchased by customers named 'cem': " + orderService.getAll().stream()
+                .filter(order -> order.getCustomer().getName().toLowerCase().equals("cem"))
+                .mapToInt(order -> order.getProductList().size()).sum());
+
+        System.out.println("Total shopping amount of customers whose name is Cem and who are younger than 30 and older than 25: " +invoiceService.getAll().stream()
+                .filter(invoice -> Period.between(invoice.getCustomer().getBirth(), LocalDate.now()).getYears() > 25)
+                .filter(invoice -> Period.between(invoice.getCustomer().getBirth(), LocalDate.now()).getYears() < 30)
+                .filter(invoice -> invoice.getCustomer().getName().toLowerCase().equals("cem"))
+                .map(invoice -> invoice.getTotalAmount()).reduce(BigDecimal.ZERO, BigDecimal::add));
+
+
+        System.out.println("Invoices over 1500 TL in the system: ");
+        invoiceService.getAll().stream()
+                .filter(invoice -> invoice.getTotalAmount().compareTo(BigDecimal.valueOf(1500)) == 1)
+                .toList().forEach(System.out::println);
+
     }
 
-    /* ödev OrderService oluşturulacak
-    private static void listOrdersByEmail(String email) {
-        List<Order> orderList = customerList.stream()
-                .filter(customer -> customer.getEmail().equals(email))
-                .flatMap(customer -> customer.getOrderList().stream())
-                .toList();
 
-        orderList.forEach(System.out::println);
-    }
 
-     */
+
+
+
+
+
 
 
 }

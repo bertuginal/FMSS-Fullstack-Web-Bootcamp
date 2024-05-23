@@ -11,11 +11,11 @@ public class PublisherService {
 
     private PublisherRepository publisherRepository = new PublisherRepository();
 
-    public void savePublisher(String name, LocalDate createDate) {
+    public Publisher savePublisher(String name, LocalDate createDate) {
 
         Publisher publisher = new Publisher(name, createDate);
         publisherRepository.save(publisher);
-
+        return publisher;
     }
 
     public List<Publisher> getAllPublishers() { return publisherRepository.getAll(); }

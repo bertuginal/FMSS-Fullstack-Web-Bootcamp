@@ -4,6 +4,7 @@ import com.fmss.model.Customer;
 import com.fmss.model.Order;
 import com.fmss.model.Product;
 import com.fmss.model.Publisher;
+import com.fmss.repository.CustomerRepository;
 import com.fmss.repository.OrderRepository;
 
 import java.math.BigDecimal;
@@ -19,16 +20,16 @@ public class OrderService {
 
 
     private OrderRepository orderRepository = new OrderRepository();
+    private CustomerRepository customerRepository= new CustomerRepository();
 
-    public void add(Set<Product> products, String orderCode) {
-        Order order = new Order(products, orderCode);
+    public Order add(List<Product> products, String orderCode, Customer customer) {
+        Order order = new Order(products, orderCode, customer);
         System.out.println("Random order code generated -> " + orderCode);
         orderRepository.add(order);
+        return order;
     }
 
     public List<Order> getAll() { return orderRepository.getAll(); }
-
-
 
 
     //--generate order code
@@ -51,5 +52,10 @@ public class OrderService {
     }
     //--end generate order code
 
+    public List<Order> getOrdersByEmail(String email) {
+        return customerRepository.findByEmail(email)
+                .map(Customer::getOrderList)
+                .orElse(Collections.emptyList());
+    }
 
 }

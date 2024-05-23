@@ -5,43 +5,47 @@ import com.fmss.model.enums.AccountType;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
 
 public class Customer {
     private String name;
     private String surname;
     private String email;
     private String password;
+    private LocalDate birth;
+    private Integer age;
     private Integer credit;
     private String phoneNumber;
     private Set<Address> address;
     private Boolean isActive;
     private AccountType accountType;
-    private List<Order> orderList = new ArrayList<>();
+    private List<Order> orderList;
 
     private Customer(){
 
     }
 
-    public Customer(String name, String surname, String email, String password){
+    public Customer(String name, String surname, LocalDate birth, String email, String password){
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.birth = birth;
         this.password = password;
         this.isActive = true;
         this.accountType=AccountType.STANDARD;
+        this.orderList = new ArrayList<>();
     }
 
-    public Customer(String name, String surname, String email, String password, Integer credit, String phoneNumber, Set<Address> address, List<Order> orderList) {
+    public Customer(String name, String surname, String email, String password, Integer credit, String phoneNumber, LocalDate age, Set<Address> address, List<Order> orderList) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.credit = credit;
         this.phoneNumber = phoneNumber;
+        this.birth = birth;
         this.address = address;
         this.orderList = orderList;
         this.isActive = true;
@@ -96,6 +100,22 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public LocalDate getBirth() {
+        return birth;
+    }
+
+    public void setBirth(LocalDate birth) {
+        this.birth = birth;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     public Set<Address> getAddress() {
         return address;
     }
@@ -130,17 +150,34 @@ public class Customer {
         this.orderList = orderList;
     }
 
+    public void addOrder(Order order) {
+        orderList.add(order);
+    }
+
+    public void addCredit(int credit) {
+        this.credit += credit;
+    }
+
+    public int calculateAge() {
+        if (birth == null) {
+            return 0;
+        }
+        return Period.between(birth, LocalDate.now()).getYears();
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", credit=" + credit +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", isActive=" + isActive +
-                ", accountType=" + accountType +
+                "name='" + name + '\n' +
+                "surname='" + surname + '\n' +
+                "age='" + age + '\n' +
+                "birth='" + birth + '\n' +
+                "email='" + email + '\n' +
+                "password='" + password + '\n' +
+                "credit=" + credit +
+                "phoneNumber='" + phoneNumber + '\n' +
+                "isActive=" + isActive + '\n' +
+                "accountType=" + accountType + '\n' +
                 '}';
     }
 

@@ -9,26 +9,27 @@ import com.fmss.repository.CustomerRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 public class CustomerService {
 
     private CustomerRepository customerRepository = new CustomerRepository();
 
-    public void save(String name, String surname, String email, String password) throws Exception {
-        Customer customer = new Customer(name, surname, email, password);
+    public Customer save(String name, String surname, LocalDate age, String email, String password) throws Exception {
+        Customer customer = new Customer(name, surname, age, email, password);
         hashPassword(customer.getPassword());
         System.out.println(password + " hashed -> " + hashPassword(customer.getPassword()));
-        for (Customer c : getCustomerList()) {
+        customer.setPassword(hashPassword(customer.getPassword()));
+        /*for (Customer c : getCustomerList()) {
             if (c.getEmail().equals(customer.getEmail())){
                 throw new Exception("Customer email already created! -> " + customer.getEmail());
             }
-        }
-        customerRepository.createCustomer(customer);
+        }*/
+         customerRepository.createCustomer(customer);
+         return customer;
     }
+
 
     public List<Customer> getCustomerList() { return customerRepository.getCustomerList(); }
 
@@ -68,9 +69,15 @@ public class CustomerService {
 
     }
 
+
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(encodedHash);
     }
+
+
+
+
+
 }

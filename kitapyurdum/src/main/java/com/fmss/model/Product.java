@@ -25,13 +25,21 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", unitInStock=" + unitInStock +
-                ", publisher=" + publisher +
-                ", category=" + category +
+                "name='" + name + '\n' +
+                "price=" + price + '\n' +
+                "description='" + description + '\n' +
+                "unitInStock=" + unitInStock + '\n' +
+                "publisher=" + publisher + '\n' +
+                "category=" + category + '\n' +
                 '}';
+    }
+
+    public void reduceStock(Integer quantity) {
+        if (quantity <= unitInStock){
+            this.unitInStock -= quantity;
+        } else {
+            throw new IllegalArgumentException("Insufficient stock! -> " + name);
+        }
     }
 
     @Override
@@ -44,4 +52,9 @@ public class Product {
 
     @Override
     public int hashCode() { return  Objects.hash(name, price, description, publisher, category);}
+
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }
