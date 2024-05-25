@@ -6,6 +6,7 @@ import com.fmss.model.Product;
 import com.fmss.model.enums.AccountType;
 import com.fmss.repository.CustomerRepository;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,11 +22,12 @@ public class CustomerService {
         hashPassword(customer.getPassword());
         System.out.println(password + " hashed -> " + hashPassword(customer.getPassword()));
         customer.setPassword(hashPassword(customer.getPassword()));
-        /*for (Customer c : getCustomerList()) {
+        for (Customer c : getCustomerList()) {
             if (c.getEmail().equals(customer.getEmail())){
-                throw new Exception("Customer email already created! -> " + customer.getEmail());
+                System.out.println("Customer email already created! -> " + customer.getEmail());
+                return customer;
             }
-        }*/
+        }
          customerRepository.createCustomer(customer);
          return customer;
     }
@@ -56,16 +58,18 @@ public class CustomerService {
         }
     }
 
-    public void addCreditForOrder(String email, double orderTotal) {
+    public void addCreditForOrder(String email, BigDecimal orderTotal) {
         Optional<Customer> findCustomer = getCustomerList()
                 .stream()
                 .filter(customer -> customer.getEmail().equals(email))
                 .findFirst();
-        Integer creditEarned = (int) (orderTotal * 0.02);
-        Integer customerCredit = findCustomer.get().getCredit();
-        customerCredit += creditEarned;
-        findCustomer.get().setCredit(customerCredit);
-        changeAccountTypeByCredit(email, creditEarned);
+            Integer intValue = orderTotal.intValue();
+            Integer creditEarned = (int) (intValue * 0.02);
+            Integer customerCredit = findCustomer.get().getCredit();
+            customerCredit += creditEarned;
+            findCustomer.get().setCredit(customerCredit);
+            changeAccountTypeByCredit(email, creditEarned);
+
 
     }
 

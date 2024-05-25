@@ -16,7 +16,7 @@ public class Customer {
     private String password;
     private LocalDate birth;
     private Integer age;
-    private Integer credit;
+    private Integer credit = 0;
     private String phoneNumber;
     private Set<Address> address;
     private Boolean isActive;
@@ -38,7 +38,7 @@ public class Customer {
         this.orderList = new ArrayList<>();
     }
 
-    public Customer(String name, String surname, String email, String password, Integer credit, String phoneNumber, LocalDate age, Set<Address> address, List<Order> orderList) {
+    public Customer(String name, String surname, String email, String password, Integer credit, String phoneNumber, LocalDate birth, Integer age, Set<Address> address, List<Order> orderList) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -46,6 +46,7 @@ public class Customer {
         this.credit = credit;
         this.phoneNumber = phoneNumber;
         this.birth = birth;
+        this.age = age;
         this.address = address;
         this.orderList = orderList;
         this.isActive = true;
@@ -84,9 +85,7 @@ public class Customer {
         this.password = password;
     }
 
-    public Integer getCredit() {
-        return credit;
-    }
+    public Integer getCredit() { return credit; }
 
     public void setCredit(Integer credit) {
         this.credit = credit;
@@ -174,7 +173,7 @@ public class Customer {
                 "birth='" + birth + '\n' +
                 "email='" + email + '\n' +
                 "password='" + password + '\n' +
-                "credit=" + credit +
+                "credit=" + credit + '\n' +
                 "phoneNumber='" + phoneNumber + '\n' +
                 "isActive=" + isActive + '\n' +
                 "accountType=" + accountType + '\n' +

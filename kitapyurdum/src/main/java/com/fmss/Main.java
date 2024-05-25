@@ -27,7 +27,6 @@ public class Main {
         //-- customer
         System.out.println("CUSTOMER LIST\n");
 
-
             Customer customer1 = customerService.save("cem", "dırman", LocalDate.of(1997, 5, 20),"cem@gmail.com", "password123");
             Customer customer2 = customerService.save("bertuğ", "inal", LocalDate.of(2000, 8, 6),"bert@gmail.com", "password123");
             Customer customer3 = customerService.save("veli", "dırman", LocalDate.of(1996, 3, 12),"veli@gmail.com", "password456");
@@ -43,6 +42,7 @@ public class Main {
 
         customerService.changeAccountType("cem@gmail.com", AccountType.GOLD);
         customerService.changeAccountTypeByCredit("veli@gmail.com", 4500);
+
 
         customerService.getCustomerList().forEach(System.out::println);
 
@@ -73,10 +73,10 @@ public class Main {
         //-- product
         System.out.println("\nPRODUCT LIST\n");
 
-        Product product1 = productService.save("Şeker Portakalı", new BigDecimal("90.20"),
+        Product product1 = productService.save("Şeker Portakalı", new BigDecimal("100.00"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!", 1000,"CAN YAYINLARI", "Roman");
 
-        Product product2 = productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("240.00"),
+        Product product2 = productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("200.00"),
                 "Ahmet Hamdi Tanpınar’ın şiiri sembolist bir ifade üzerine kurulmuştur.",  2000, "CAN YAYINLARI", "Gezi");
 
         Product product3 = productService.save("Saatleri Ayarlama Enstitüsü", new BigDecimal("2040.00"),
@@ -85,7 +85,7 @@ public class Main {
         Product product4 = productService.save("Küçük Prens", new BigDecimal("12.88"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!",1200,"DERGAH YAYINLARI", "Roman");
 
-        Product product5 = productService.save("Küçük Prens", new BigDecimal("12.88"),
+        Product product5 = productService.save("Küçük Prens", new BigDecimal("300.00"),
                 "Ne güzel bir şeker portakalı fidanıymış bu!",700,"DERGAH YAYINLARI", "Gezi");
 
         productService.listAll();
@@ -105,10 +105,9 @@ public class Main {
         Order order1 = orderService.add(productList1, OrderService.generateOrderCode(), customer1);
         Order order2 = orderService.add(productList2, OrderService.generateOrderCode(), customer2);
 
-        //customerService.addCreditForOrder(customer1.getEmail(), );
 
 
-        //customerService.addCreditForOrder();
+
 
         orderService.getAll().forEach(System.out::println);
 
@@ -119,6 +118,17 @@ public class Main {
 
         invoiceService.createInvoice(order1, customer1);
         invoiceService.createInvoice(order2, customer2);
+
+
+        System.out.println("The customer earns 2% points on the total amount of each order!");
+        BigDecimal customer1OrderTotal = invoiceService.getAll()
+                .stream()
+                .filter(invoice -> invoice.getCustomer().getEmail().equals(customer1.getEmail()))
+                .map(invoice -> invoice.getTotalAmount()).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        customerService.addCreditForOrder(customer1.getEmail(), customer1OrderTotal);
+        System.out.println("Customer1 credit: " + customer1.getCredit());
+
         invoiceService.getAll().forEach(System.out::println);
 
 
@@ -142,14 +152,4 @@ public class Main {
                 .toList().forEach(System.out::println);
 
     }
-
-
-
-
-
-
-
-
-
-
 }
