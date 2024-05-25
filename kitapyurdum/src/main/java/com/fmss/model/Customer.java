@@ -16,7 +16,7 @@ public class Customer {
     private String password;
     private LocalDate birth;
     private Integer age;
-    private Integer credit = 0;
+    private Integer credit;
     private String phoneNumber;
     private Set<Address> address;
     private Boolean isActive;
@@ -32,6 +32,7 @@ public class Customer {
         this.surname = surname;
         this.email = email;
         this.birth = birth;
+        this.credit = 0;
         this.password = password;
         this.isActive = true;
         this.accountType=AccountType.STANDARD;

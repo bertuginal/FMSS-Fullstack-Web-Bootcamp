@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class CategoryService {
-    private CategoryRepository categoryRepository = new CategoryRepository();
+    private CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     public Category save(String name) {
         Category category = new Category(name);

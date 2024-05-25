@@ -8,6 +8,15 @@ import java.util.List;
 
 public class CategoryRepository {
 
+    private static CategoryRepository instance;
+
+    public static CategoryRepository getInstance() {
+        if (instance == null) {
+            instance = new CategoryRepository();
+        }
+        return instance;
+    }
+
     private List<Category> categoryList = new ArrayList<>();
 
     public void save(Category category) { categoryList.add(category); }

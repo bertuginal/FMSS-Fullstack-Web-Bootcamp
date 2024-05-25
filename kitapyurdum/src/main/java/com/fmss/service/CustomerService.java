@@ -15,7 +15,11 @@ import java.util.*;
 
 public class CustomerService {
 
-    private CustomerRepository customerRepository = new CustomerRepository();
+    private CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     public Customer save(String name, String surname, LocalDate age, String email, String password) throws Exception {
         Customer customer = new Customer(name, surname, age, email, password);

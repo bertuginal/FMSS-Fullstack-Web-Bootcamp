@@ -6,11 +6,18 @@ import com.fmss.model.Product;
 import com.fmss.model.Publisher;
 import com.fmss.repository.CustomerRepository;
 import com.fmss.repository.OrderRepository;
+import com.fmss.repository.PublisherRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class OrderService {
+
+    private OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     private static final Integer ORDER_CODE_LENGTH = 10;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -18,8 +25,6 @@ public class OrderService {
     private static final Random random = new Random();
 
 
-
-    private OrderRepository orderRepository = new OrderRepository();
     private CustomerRepository customerRepository= new CustomerRepository();
 
     public Order add(List<Product> products, String orderCode, Customer customer) {

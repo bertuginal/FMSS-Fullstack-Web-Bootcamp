@@ -8,6 +8,15 @@ import java.util.Optional;
 
 public class CustomerRepository {
 
+    private static CustomerRepository instance;
+
+    public static CustomerRepository getInstance() {
+        if (instance == null) {
+            instance = new CustomerRepository();
+        }
+        return instance;
+    }
+
     private List<Customer> customerList = new ArrayList<>();
 
     public void createCustomer(Customer customer) { customerList.add(customer); }

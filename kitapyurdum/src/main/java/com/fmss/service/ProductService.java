@@ -1,8 +1,10 @@
 package com.fmss.service;
 
+import com.fmss.factory.ServiceFactory;
 import com.fmss.model.Category;
 import com.fmss.model.Product;
 import com.fmss.model.Publisher;
+import com.fmss.repository.CustomerRepository;
 import com.fmss.repository.ProductRepository;
 
 import java.math.BigDecimal;
@@ -11,15 +13,20 @@ import java.util.Set;
 
 public class ProductService {
 
-    private ProductRepository productRepository = new ProductRepository();
+    private ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+        this.publisherService = ServiceFactory.createPublisherService();
+        this.categoryService = ServiceFactory.createCategoryService();
+    }
+
+
 
     private PublisherService publisherService;
     private CategoryService categoryService;
 
-    public ProductService(PublisherService publisherService, CategoryService categoryService) {
-        this.publisherService = publisherService;
-        this.categoryService = categoryService;
-    }
+
 
     public Product save(String name, BigDecimal price, String description, Integer unitInStock, String publisherName, String categoryName) {
         Optional<Publisher> publisher = publisherService.getByName(publisherName);

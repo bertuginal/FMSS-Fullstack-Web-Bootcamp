@@ -1,6 +1,7 @@
 package com.fmss.service;
 
 import com.fmss.model.Publisher;
+import com.fmss.repository.CustomerRepository;
 import com.fmss.repository.PublisherRepository;
 
 import java.time.LocalDate;
@@ -9,7 +10,11 @@ import java.util.Optional;
 
 public class PublisherService {
 
-    private PublisherRepository publisherRepository = new PublisherRepository();
+    private PublisherRepository publisherRepository;
+
+    public PublisherService(PublisherRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
+    }
 
     public Publisher savePublisher(String name, LocalDate createDate) {
 

@@ -1,10 +1,8 @@
 package com.fmss;
 
+import com.fmss.factory.ServiceFactory;
 import com.fmss.model.*;
 import com.fmss.model.enums.AccountType;
-import com.fmss.repository.CustomerRepository;
-import com.fmss.repository.InvoiceRepository;
-import com.fmss.repository.ProductRepository;
 import com.fmss.service.*;
 
 import java.math.BigDecimal;
@@ -15,13 +13,12 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        CustomerService customerService = new CustomerService();
-        OrderService orderService = new OrderService();
-        PublisherService publisherService = new PublisherService();
-        CategoryService categoryService = new CategoryService();
-        ProductService productService = new ProductService(publisherService, categoryService);
-        InvoiceRepository invoiceRepository = new InvoiceRepository();
-        InvoiceService invoiceService = new InvoiceService(invoiceRepository);
+        CustomerService customerService = ServiceFactory.createCustomerService();
+        OrderService orderService = ServiceFactory.createOrderService();
+        PublisherService publisherService = ServiceFactory.createPublisherService();
+        CategoryService categoryService = ServiceFactory.createCategoryService();
+        ProductService productService = ServiceFactory.createProductService();
+        InvoiceService invoiceService = ServiceFactory.createInvoiceService();
 
 
         //-- customer
